@@ -1,0 +1,59 @@
+{
+  "description": "ContextOS Research Benchmark - Synthetic Personal Knowledge Corpus",
+  "documents": [
+    {
+      "id": "doc_001",
+      "filename": "Project_Capsule_Proposal.pdf",
+      "date": "2026-04-15",
+      "content": "Project Capsule initial proposal: Building an offline personal knowledge assistant. Architecture V1 utilizes React Native for mobile clients and FastAPI on local endpoints. Focus is on privacy-first document ingestion.",
+      "entities": ["Project Capsule", "React Native", "FastAPI", "Architecture V1"]
+    },
+    {
+      "id": "doc_002",
+      "filename": "Architecture_Revision_Notes.txt",
+      "date": "2026-08-20",
+      "content": "Architecture V2 supersedes Architecture V1. Desktop target transitioned to Tauri 2 with React and TypeScript. Ingestion switched from polling to debounced Watchdog file events.",
+      "entities": ["Architecture V2", "Architecture V1", "Tauri 2", "React", "TypeScript", "Watchdog"]
+    },
+    {
+      "id": "doc_003",
+      "filename": "Transformers_and_Attention_Survey.pdf",
+      "date": "2026-09-12",
+      "content": "Survey on multi-head self-attention and Transformer architectures. Discussed on September 12, 2026 during weekly AI seminar. Highlights temporal knowledge graph integration with Sentence Transformers.",
+      "entities": ["Transformers", "Attention Mechanism", "Temporal Knowledge Graph", "Sentence Transformers", "September 12, 2026"]
+    },
+    {
+      "id": "doc_004",
+      "filename": "Diffusion_Models_Cheatsheet.md",
+      "date": "2026-10-02",
+      "content": "Summary of Denoising Diffusion Probabilistic Models (DDPM) and Latent Diffusion. Explains noise schedules and reverse Markov transitions for generative imaging.",
+      "entities": ["Diffusion Models", "DDPM", "Latent Diffusion"]
+    }
+  ],
+  "queries": [
+    {
+      "query": "What changed between my first and latest project architecture?",
+      "target_doc_ids": ["doc_001", "doc_002"],
+      "requires_temporal_reasoning": true,
+      "requires_graph_link": true
+    },
+    {
+      "query": "Which technology does Project Capsule use for native desktop?",
+      "target_doc_ids": ["doc_002"],
+      "requires_temporal_reasoning": true,
+      "requires_graph_link": true
+    },
+    {
+      "query": "Where did I read about temporal knowledge graphs and transformers?",
+      "target_doc_ids": ["doc_003"],
+      "requires_temporal_reasoning": false,
+      "requires_graph_link": false
+    },
+    {
+      "query": "When was the transformer seminar discussed?",
+      "target_doc_ids": ["doc_003"],
+      "requires_temporal_reasoning": true,
+      "requires_graph_link": false
+    }
+  ]
+}

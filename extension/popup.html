@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ContextOS</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        width: 360px;
+        min-height: 420px;
+        font-family: "Inter", system-ui, -apple-system, sans-serif;
+        background: #0a0a0f;
+        color: #f1f5f9;
+      }
+
+      .header {
+        padding: 20px;
+        border-bottom: 1px solid #2a2a3a;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .logo {
+        width: 32px;
+        height: 32px;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 14px;
+      }
+
+      .brand h1 {
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .brand p {
+        font-size: 11px;
+        color: #64748b;
+      }
+
+      .status {
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid #2a2a3a;
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #ef4444;
+      }
+
+      .status-dot.connected {
+        background: #22c55e;
+        animation: pulse 2s infinite;
+      }
+
+      .status-text {
+        font-size: 13px;
+        color: #94a3b8;
+      }
+
+      .status-text.connected {
+        color: #22c55e;
+      }
+
+      .actions {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      button {
+        padding: 12px 16px;
+        border: 1px solid #2a2a3a;
+        border-radius: 10px;
+        background: #12121a;
+        color: #f1f5f9;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      button:hover {
+        background: #1a1a25;
+        border-color: #3a3a4a;
+      }
+
+      button.primary {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        border-color: transparent;
+      }
+
+      button.primary:hover {
+        opacity: 0.9;
+      }
+
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .btn-icon {
+        font-size: 16px;
+      }
+
+      .settings {
+        padding: 16px 20px;
+        border-top: 1px solid #2a2a3a;
+      }
+
+      .settings label {
+        font-size: 12px;
+        color: #64748b;
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      .settings input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #2a2a3a;
+        border-radius: 8px;
+        background: #12121a;
+        color: #f1f5f9;
+        font-family: inherit;
+        font-size: 12px;
+        outline: none;
+      }
+
+      .settings input:focus {
+        border-color: #6366f1;
+      }
+
+      .result {
+        padding: 12px 20px;
+        font-size: 12px;
+        display: none;
+      }
+
+      .result.success {
+        color: #22c55e;
+        display: block;
+      }
+
+      .result.error {
+        color: #ef4444;
+        display: block;
+      }
+
+      .footer {
+        padding: 12px 20px;
+        border-top: 1px solid #2a2a3a;
+        text-align: center;
+      }
+
+      .footer a {
+        font-size: 11px;
+        color: #6366f1;
+        text-decoration: none;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="logo">C</div>
+      <div class="brand">
+        <h1>ContextOS</h1>
+        <p>Personal AI Memory</p>
+      </div>
+    </div>
+
+    <div class="status" id="statusBar">
+      <div class="status-dot" id="statusDot"></div>
+      <span class="status-text" id="statusText">Checking connection...</span>
+    </div>
+
+    <div class="actions">
+      <button class="primary" id="savePageBtn" disabled>
+        <span class="btn-icon">📄</span>
+        Save This Page
+      </button>
+      <button id="saveSelectionBtn" disabled>
+        <span class="btn-icon">✂️</span>
+        Save Selection
+      </button>
+      <button id="saveUrlBtn" disabled>
+        <span class="btn-icon">🔗</span>
+        Save URL Only
+      </button>
+    </div>
+
+    <div class="result" id="result"></div>
+
+    <div class="settings">
+      <label for="apiKey">API Key</label>
+      <input
+        type="password"
+        id="apiKey"
+        placeholder="Enter your ContextOS API key"
+      />
+    </div>
+
+    <div class="footer">
+      <a href="#" id="openDesktopLink">Open ContextOS Desktop →</a>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

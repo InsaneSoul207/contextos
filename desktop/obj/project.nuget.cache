@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "ScBCikD2ajI=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Eshaan Mishra\\OneDrive\\Desktop\\Sem-5\\IMD\\Project\\contextos\\desktop\\ContextOSDesktop.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Eshaan Mishra\\.nuget\\packages\\microsoft.net.illink.tasks\\8.0.10\\microsoft.net.illink.tasks.8.0.10.nupkg.sha512",
+    "C:\\Users\\Eshaan Mishra\\.nuget\\packages\\microsoft.web.webview2\\1.0.4314.35\\microsoft.web.webview2.1.0.4314.35.nupkg.sha512"
+  ],
+  "logs": []
+}

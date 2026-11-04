@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-text-primary antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  ::selection {
+    background-color: #ebe4d8;
+    color: #1c1917;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ded7cb;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #cac1b3;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* React Flow overrides */
+.react-flow__background {
+  background-color: #faf8f5 !important;
+}
+
+.react-flow__minimap {
+  background-color: #ffffff !important;
+  border: 1px solid #e7e2d6 !important;
+  border-radius: 8px !important;
+}
+
+.react-flow__controls {
+  border: 1px solid #e7e2d6 !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+.react-flow__controls-button {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #e7e2d6 !important;
+  fill: #78716c !important;
+}
+
+.react-flow__controls-button:hover {
+  background-color: #f3efe6 !important;
+}
+
+/* Smooth transitions */
+* {
+  scrollbar-color: #ded7cb transparent;
+}
+
+/* Focus ring */
+*:focus-visible {
+  outline: 1px solid #78716c;
+  outline-offset: 1px;
+}
+
+/* Disable text selection on draggable elements */
+[data-tauri-drag-region] {
+  -webkit-user-select: none;
+  user-select: none;
+}

@@ -1,0 +1,48 @@
+/* ContextOS Browser Extension - Content Script Styles */
+/* Minimal styles for any overlay/notification elements */
+
+.contextos-notification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #f1f5f9;
+  background: #12121a;
+  border: 1px solid #2a2a3a;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  z-index: 2147483647;
+  animation: contextos-slide-in 0.3s ease-out;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.contextos-notification.success {
+  border-color: #22c55e40;
+  background: linear-gradient(135deg, #12121a, #12221a);
+}
+
+.contextos-notification.error {
+  border-color: #ef444440;
+  background: linear-gradient(135deg, #12121a, #221212);
+}
+
+.contextos-notification-icon {
+  width: 16px;
+  height: 16px;
+}
+
+@keyframes contextos-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

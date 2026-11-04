@@ -1,0 +1,340 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/AddSourceDialog.tsx");import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=c35f20e4"; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+import * as RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope;
+let prevRefreshReg;
+let prevRefreshSig;
+if (import.meta.hot && !inWebWorker) {
+  if (!window.$RefreshReg$) {
+    throw new Error(
+      "@vitejs/plugin-react can't detect preamble. Something is wrong."
+    );
+  }
+  prevRefreshReg = window.$RefreshReg$;
+  prevRefreshSig = window.$RefreshSig$;
+  window.$RefreshReg$ = RefreshRuntime.getRefreshReg("C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx");
+  window.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
+}
+var _s = $RefreshSig$();
+import __vite__cjsImport3_react from "/node_modules/.vite/deps/react.js?v=c35f20e4"; const useState = __vite__cjsImport3_react["useState"];
+import { Folder, X } from "/node_modules/.vite/deps/lucide-react.js?v=c35f20e4";
+import { api } from "/src/lib/api.ts";
+export const AddSourceDialog = ({
+  isOpen,
+  onClose,
+  onSourceAdded
+}) => {
+  _s();
+  const [displayName, setDisplayName] = useState("");
+  const [path, setPath] = useState("");
+  const [sourceType, setSourceType] = useState("documents");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+  if (!isOpen) return null;
+  const handleBrowse = async () => {
+    try {
+      const { open } = await import("/node_modules/.vite/deps/@tauri-apps_plugin-dialog.js?v=c35f20e4");
+      const selected = await open({
+        directory: true,
+        multiple: false,
+        title: "Select Monitored Folder"
+      });
+      if (selected && typeof selected === "string") {
+        setPath(selected);
+        if (!displayName) {
+          const parts = selected.split(/[\\/]/);
+          setDisplayName(parts[parts.length - 1] || "Monitored Folder");
+        }
+      }
+    } catch {
+      const manual = prompt("Enter full folder path to monitor:");
+      if (manual) {
+        setPath(manual);
+        if (!displayName) {
+          const parts = manual.split(/[\\/]/);
+          setDisplayName(parts[parts.length - 1] || "Monitored Folder");
+        }
+      }
+    }
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!path.trim()) {
+      setError("Folder path is required.");
+      return;
+    }
+    setIsSubmitting(true);
+    setError(null);
+    try {
+      await api.createSource({
+        display_name: displayName.trim() || path.split(/[\\/]/).pop() || "Folder",
+        path: path.trim(),
+        source_type: sourceType
+      });
+      onSourceAdded();
+      onClose();
+    } catch (err) {
+      setError(err?.message || "Failed to add source folder.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  return /* @__PURE__ */ jsxDEV("div", { className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm", children: /* @__PURE__ */ jsxDEV("div", { className: "w-full max-w-md bg-surface border border-border rounded-xl shadow-2xl p-6 relative animate-in fade-in zoom-in-95 duration-150", children: [
+    /* @__PURE__ */ jsxDEV(
+      "button",
+      {
+        onClick: onClose,
+        className: "absolute top-4 right-4 text-text-tertiary hover:text-text-primary transition-colors",
+        children: /* @__PURE__ */ jsxDEV(X, { className: "w-5 h-5" }, void 0, false, {
+          fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+          lineNumber: 105,
+          columnNumber: 11
+        }, this)
+      },
+      void 0,
+      false,
+      {
+        fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+        lineNumber: 101,
+        columnNumber: 9
+      },
+      this
+    ),
+    /* @__PURE__ */ jsxDEV("h2", { className: "text-lg font-semibold text-text-primary mb-1", children: "Add Monitored Folder" }, void 0, false, {
+      fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+      lineNumber: 108,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV("p", { className: "text-xs text-text-secondary mb-5", children: "ContextOS will continuously track, ingest, and connect files saved here." }, void 0, false, {
+      fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+      lineNumber: 111,
+      columnNumber: 9
+    }, this),
+    error && /* @__PURE__ */ jsxDEV("div", { className: "mb-4 p-3 rounded-lg bg-danger/10 border border-danger/30 text-xs text-danger", children: error }, void 0, false, {
+      fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+      lineNumber: 116,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV("form", { onSubmit: handleSubmit, className: "space-y-4", children: [
+      /* @__PURE__ */ jsxDEV("div", { children: [
+        /* @__PURE__ */ jsxDEV("label", { className: "block text-xs font-medium text-text-secondary mb-1", children: "Folder Path" }, void 0, false, {
+          fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+          lineNumber: 123,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { className: "flex gap-2", children: [
+          /* @__PURE__ */ jsxDEV(
+            "input",
+            {
+              type: "text",
+              value: path,
+              onChange: (e) => setPath(e.target.value),
+              placeholder: "C:\\Users\\...\\Documents\\Research",
+              className: "flex-1 px-3 py-2 bg-background border border-border rounded-lg text-sm text-text-primary focus:outline-none focus:border-primary placeholder:text-text-tertiary font-mono"
+            },
+            void 0,
+            false,
+            {
+              fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+              lineNumber: 127,
+              columnNumber: 15
+            },
+            this
+          ),
+          /* @__PURE__ */ jsxDEV(
+            "button",
+            {
+              type: "button",
+              onClick: handleBrowse,
+              className: "px-3 py-2 bg-surface-hover hover:bg-surface-active border border-border rounded-lg text-sm text-text-secondary flex items-center gap-1.5 transition-colors",
+              children: [
+                /* @__PURE__ */ jsxDEV(Folder, { className: "w-4 h-4" }, void 0, false, {
+                  fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+                  lineNumber: 139,
+                  columnNumber: 17
+                }, this),
+                "Browse"
+              ]
+            },
+            void 0,
+            true,
+            {
+              fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+              lineNumber: 134,
+              columnNumber: 15
+            },
+            this
+          )
+        ] }, void 0, true, {
+          fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+          lineNumber: 126,
+          columnNumber: 13
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+        lineNumber: 122,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { children: [
+        /* @__PURE__ */ jsxDEV("label", { className: "block text-xs font-medium text-text-secondary mb-1", children: "Display Name" }, void 0, false, {
+          fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+          lineNumber: 146,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV(
+          "input",
+          {
+            type: "text",
+            value: displayName,
+            onChange: (e) => setDisplayName(e.target.value),
+            placeholder: "e.g. AI Research Papers",
+            className: "w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-text-primary focus:outline-none focus:border-primary placeholder:text-text-tertiary"
+          },
+          void 0,
+          false,
+          {
+            fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+            lineNumber: 149,
+            columnNumber: 13
+          },
+          this
+        )
+      ] }, void 0, true, {
+        fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+        lineNumber: 145,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { children: [
+        /* @__PURE__ */ jsxDEV("label", { className: "block text-xs font-medium text-text-secondary mb-1", children: "Source Category" }, void 0, false, {
+          fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+          lineNumber: 159,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV(
+          "select",
+          {
+            value: sourceType,
+            onChange: (e) => setSourceType(e.target.value),
+            className: "w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-text-primary focus:outline-none focus:border-primary",
+            children: [
+              /* @__PURE__ */ jsxDEV("option", { value: "documents", children: "Documents" }, void 0, false, {
+                fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+                lineNumber: 167,
+                columnNumber: 15
+              }, this),
+              /* @__PURE__ */ jsxDEV("option", { value: "screenshots", children: "Screenshots" }, void 0, false, {
+                fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+                lineNumber: 168,
+                columnNumber: 15
+              }, this),
+              /* @__PURE__ */ jsxDEV("option", { value: "research", children: "Research" }, void 0, false, {
+                fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+                lineNumber: 169,
+                columnNumber: 15
+              }, this),
+              /* @__PURE__ */ jsxDEV("option", { value: "projects", children: "Projects" }, void 0, false, {
+                fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+                lineNumber: 170,
+                columnNumber: 15
+              }, this),
+              /* @__PURE__ */ jsxDEV("option", { value: "downloads", children: "Downloads" }, void 0, false, {
+                fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+                lineNumber: 171,
+                columnNumber: 15
+              }, this),
+              /* @__PURE__ */ jsxDEV("option", { value: "custom", children: "Custom" }, void 0, false, {
+                fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+                lineNumber: 172,
+                columnNumber: 15
+              }, this)
+            ]
+          },
+          void 0,
+          true,
+          {
+            fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+            lineNumber: 162,
+            columnNumber: 13
+          },
+          this
+        )
+      ] }, void 0, true, {
+        fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+        lineNumber: 158,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { className: "flex justify-end gap-3 pt-3", children: [
+        /* @__PURE__ */ jsxDEV(
+          "button",
+          {
+            type: "button",
+            onClick: onClose,
+            className: "px-4 py-2 text-sm text-text-secondary hover:text-text-primary transition-colors",
+            children: "Cancel"
+          },
+          void 0,
+          false,
+          {
+            fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+            lineNumber: 177,
+            columnNumber: 13
+          },
+          this
+        ),
+        /* @__PURE__ */ jsxDEV(
+          "button",
+          {
+            type: "submit",
+            disabled: isSubmitting,
+            className: "px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary-hover disabled:opacity-50 rounded-lg transition-colors",
+            children: isSubmitting ? "Connecting..." : "Authorise & Monitor"
+          },
+          void 0,
+          false,
+          {
+            fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+            lineNumber: 184,
+            columnNumber: 13
+          },
+          this
+        )
+      ] }, void 0, true, {
+        fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+        lineNumber: 176,
+        columnNumber: 11
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+      lineNumber: 121,
+      columnNumber: 9
+    }, this)
+  ] }, void 0, true, {
+    fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+    lineNumber: 100,
+    columnNumber: 7
+  }, this) }, void 0, false, {
+    fileName: "C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx",
+    lineNumber: 99,
+    columnNumber: 5
+  }, this);
+};
+_s(AddSourceDialog, "kfkbeT4Pz3mONjS4SU1i+a2NgvE=");
+_c = AddSourceDialog;
+export default AddSourceDialog;
+var _c;
+$RefreshReg$(_c, "AddSourceDialog");
+if (import.meta.hot && !inWebWorker) {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+if (import.meta.hot && !inWebWorker) {
+  RefreshRuntime.__hmr_import(import.meta.url).then((currentExports) => {
+    RefreshRuntime.registerExportsForReactRefresh("C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate("C:/Users/Eshaan Mishra/OneDrive/Desktop/Sem-5/IMD/Project/contextos/src/components/AddSourceDialog.tsx", currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+
+//# sourceMappingURL=data:application/json;base64,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TUFBSztBQUFBLFlBQ0wsU0FBU25DO0FBQUFBLFlBQ1QsV0FBVTtBQUFBLFlBQWlGO0FBQUE7QUFBQSxVQUg3RjtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUEsUUFNQTtBQUFBLFFBQ0E7QUFBQSxVQUFDO0FBQUE7QUFBQSxZQUNDLE1BQUs7QUFBQSxZQUNMLFVBQVVTO0FBQUFBLFlBQ1YsV0FBVTtBQUFBLFlBRVRBLHlCQUFlLGtCQUFrQjtBQUFBO0FBQUEsVUFMcEM7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBLFFBTUE7QUFBQSxXQWRGO0FBQUE7QUFBQTtBQUFBO0FBQUEsYUFlQTtBQUFBLFNBdEVGO0FBQUE7QUFBQTtBQUFBO0FBQUEsV0F1RUE7QUFBQSxPQTVGRjtBQUFBO0FBQUE7QUFBQTtBQUFBLFNBNkZBLEtBOUZGO0FBQUE7QUFBQTtBQUFBO0FBQUEsU0ErRkE7QUFFSjtBQUFFUCxHQXJLV0osaUJBQStDO0FBQUEsS0FBL0NBO0FBdUtiLGVBQWVBO0FBQWdCLElBQUFzQztBQUFBLGFBQUFBLElBQUEiLCJuYW1lcyI6WyJ1c2VTdGF0ZSIsIkZvbGRlciIsIlgiLCJhcGkiLCJBZGRTb3VyY2VEaWFsb2ciLCJpc09wZW4iLCJvbkNsb3NlIiwib25Tb3VyY2VBZGRlZCIsIl9zIiwiZGlzcGxheU5hbWUiLCJzZXREaXNwbGF5TmFtZSIsInBhdGgiLCJzZXRQYXRoIiwic291cmNlVHlwZSIsInNldFNvdXJjZVR5cGUiLCJpc1N1Ym1pdHRpbmciLCJzZXRJc1N1Ym1pdHRpbmciLCJlcnJvciIsInNldEVycm9yIiwiaGFuZGxlQnJvd3NlIiwib3BlbiIsInNlbGVjdGVkIiwiZGlyZWN0b3J5IiwibXVsdGlwbGUiLCJ0aXRsZSIsInBhcnRzIiwic3BsaXQiLCJsZW5ndGgiLCJtYW51YWwiLCJwcm9tcHQiLCJoYW5kbGVTdWJtaXQiLCJlIiwicHJldmVudERlZmF1bHQiLCJ0cmltIiwiY3JlYXRlU291cmNlIiwiZGlzcGxheV9uYW1lIiwicG9wIiwic291cmNlX3R5cGUiLCJlcnIiLCJtZXNzYWdlIiwidGFyZ2V0IiwidmFsdWUiLCJfYyJdLCJpZ25vcmVMaXN0IjpbXSwic291cmNlcyI6WyJBZGRTb3VyY2VEaWFsb2cudHN4Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCwgeyB1c2VTdGF0ZSB9IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHsgRm9sZGVyLCBYIH0gZnJvbSBcImx1Y2lkZS1yZWFjdFwiO1xuaW1wb3J0IHsgYXBpIH0gZnJvbSBcIkAvbGliL2FwaVwiO1xuaW1wb3J0IHR5cGUgeyBTb3VyY2VUeXBlIH0gZnJvbSBcIkAvdHlwZXNcIjtcblxuaW50ZXJmYWNlIEFkZFNvdXJjZURpYWxvZ1Byb3BzIHtcbiAgaXNPcGVuOiBib29sZWFuO1xuICBvbkNsb3NlOiAoKSA9PiB2b2lkO1xuICBvblNvdXJjZUFkZGVkOiAoKSA9PiB2b2lkO1xufVxuXG5leHBvcnQgY29uc3QgQWRkU291cmNlRGlhbG9nOiBSZWFjdC5GQzxBZGRTb3VyY2VEaWFsb2dQcm9wcz4gPSAoe1xuICBpc09wZW4sXG4gIG9uQ2xvc2UsXG4gIG9uU291cmNlQWRkZWQsXG59KSA9PiB7XG4gIGNvbnN0IFtkaXNwbGF5TmFtZSwgc2V0RGlzcGxheU5hbWVdID0gdXNlU3RhdGUoXCJcIik7XG4gIGNvbnN0IFtwYXRoLCBzZXRQYXRoXSA9IHVzZVN0YXRlKFwiXCIpO1xuICBjb25zdCBbc291cmNlVHlwZSwgc2V0U291cmNlVHlwZV0gPSB1c2VTdGF0ZTxTb3VyY2VUeXBlPihcImRvY3VtZW50c1wiKTtcbiAgY29uc3QgW2lzU3VibWl0dGluZywgc2V0SXNTdWJtaXR0aW5nXSA9IHVzZVN0YXRlKGZhbHNlKTtcbiAgY29uc3QgW2Vycm9yLCBzZXRFcnJvcl0gPSB1c2VTdGF0ZTxzdHJpbmcgfCBudWxsPihudWxsKTtcblxuICBpZiAoIWlzT3BlbikgcmV0dXJuIG51bGw7XG5cbiAgY29uc3QgaGFuZGxlQnJvd3NlID0gYXN5bmMgKCkgPT4ge1xuICAgIHRyeSB7XG4gICAgICAvLyBDaGVjayBpZiBUYXVyaSBkaWFsb2cgcGx1Z2luIGlzIGF2YWlsYWJsZVxuICAgICAgY29uc3QgeyBvcGVuIH0gPSBhd2FpdCBpbXBvcnQoXCJAdGF1cmktYXBwcy9wbHVnaW4tZGlhbG9nXCIpO1xuICAgICAgY29uc3Qgc2VsZWN0ZWQgPSBhd2FpdCBvcGVuKHtcbiAgICAgICAgZGlyZWN0b3J5OiB0cnVlLFxuICAgICAgICBtdWx0aXBsZTogZmFsc2UsXG4gICAgICAgIHRpdGxlOiBcIlNlbGVjdCBNb25pdG9yZWQgRm9sZGVyXCIsXG4gICAgICB9KTtcbiAgICAgIGlmIChzZWxlY3RlZCAmJiB0eXBlb2Ygc2VsZWN0ZWQgPT09IFwic3RyaW5nXCIpIHtcbiAgICAgICAgc2V0UGF0aChzZWxlY3RlZCk7XG4gICAgICAgIGlmICghZGlzcGxheU5hbWUpIHtcbiAgICAgICAgICBjb25zdCBwYXJ0cyA9IHNlbGVjdGVkLnNwbGl0KC9bXFxcXC9dLyk7XG4gICAgICAgICAgc2V0RGlzcGxheU5hbWUocGFydHNbcGFydHMubGVuZ3RoIC0gMV0gfHwgXCJNb25pdG9yZWQgRm9sZGVyXCIpO1xuICAgICAgICB9XG4gICAgICB9XG4gICAgfSBjYXRjaCB7XG4gICAgICAvLyBGYWxsYmFjayBmb3IgYnJvd3NlciBtb2RlXG4gICAgICBjb25zdCBtYW51YWwgPSBwcm9tcHQoXCJFbnRlciBmdWxsIGZvbGRlciBwYXRoIHRvIG1vbml0b3I6XCIpO1xuICAgICAgaWYgKG1hbnVhbCkge1xuICAgICAgICBzZXRQYXRoKG1hbnVhbCk7XG4gICAgICAgIGlmICghZGlzcGxheU5hbWUpIHtcbiAgICAgICAgICBjb25zdCBwYXJ0cyA9IG1hbnVhbC5zcGxpdCgvW1xcXFwvXS8pO1xuICAgICAgICAgIHNldERpc3BsYXlOYW1lKHBhcnRzW3BhcnRzLmxlbmd0aCAtIDFdIHx8IFwiTW9uaXRvcmVkIEZvbGRlclwiKTtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfTtcblxuICBjb25zdCBoYW5kbGVTdWJtaXQgPSBhc3luYyAoZTogUmVhY3QuRm9ybUV2ZW50KSA9PiB7XG4gICAgZS5wcmV2ZW50RGVmYXVsdCgpO1xuICAgIGlmICghcGF0aC50cmltKCkpIHtcbiAgICAgIHNldEVycm9yKFwiRm9sZGVyIHBhdGggaXMgcmVxdWlyZWQuXCIpO1xuICAgICAgcmV0dXJuO1xuICAgIH1cblxuICAgIHNldElzU3VibWl0dGluZyh0cnVlKTtcbiAgICBzZXRFcnJvcihudWxsKTtcblxuICAgIHRyeSB7XG4gICAgICBhd2FpdCBhcGkuY3JlYXRlU291cmNlKHtcbiAgICAgICAgZGlzcGxheV9uYW1lOiBkaXNwbGF5TmFtZS50cmltKCkgfHwgcGF0aC5zcGxpdCgvW1xcXFwvXS8pLnBvcCgpIHx8IFwiRm9sZGVyXCIsXG4gICAgICAgIHBhdGg6IHBhdGgudHJpbSgpLFxuICAgICAgICBzb3VyY2VfdHlwZTogc291cmNlVHlwZSxcbiAgICAgIH0pO1xuICAgICAgb25Tb3VyY2VBZGRlZCgpO1xuICAgICAgb25DbG9zZSgpO1xuICAgIH0gY2F0Y2ggKGVycjogYW55KSB7XG4gICAgICBzZXRFcnJvcihlcnI/Lm1lc3NhZ2UgfHwgXCJGYWlsZWQgdG8gYWRkIHNvdXJjZSBmb2xkZXIuXCIpO1xuICAgIH0gZmluYWxseSB7XG4gICAgICBzZXRJc1N1Ym1pdHRpbmcoZmFsc2UpO1xuICAgIH1cbiAgfTtcblxuICByZXR1cm4gKFxuICAgIDxkaXYgY2xhc3NOYW1lPVwiZml4ZWQgaW5zZXQtMCB6LTUwIGZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIGJnLWJsYWNrLzYwIGJhY2tkcm9wLWJsdXItc21cIj5cbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwidy1mdWxsIG1heC13LW1kIGJnLXN1cmZhY2UgYm9yZGVyIGJvcmRlci1ib3JkZXIgcm91bmRlZC14bCBzaGFkb3ctMnhsIHAtNiByZWxhdGl2ZSBhbmltYXRlLWluIGZhZGUtaW4gem9vbS1pbi05NSBkdXJhdGlvbi0xNTBcIj5cbiAgICAgICAgPGJ1dHRvblxuICAgICAgICAgIG9uQ2xpY2s9e29uQ2xvc2V9XG4gICAgICAgICAgY2xhc3NOYW1lPVwiYWJzb2x1dGUgdG9wLTQgcmlnaHQtNCB0ZXh0LXRleHQtdGVydGlhcnkgaG92ZXI6dGV4dC10ZXh0LXByaW1hcnkgdHJhbnNpdGlvbi1jb2xvcnNcIlxuICAgICAgICA+XG4gICAgICAgICAgPFggY2xhc3NOYW1lPVwidy01IGgtNVwiIC8+XG4gICAgICAgIDwvYnV0dG9uPlxuXG4gICAgICAgIDxoMiBjbGFzc05hbWU9XCJ0ZXh0LWxnIGZvbnQtc2VtaWJvbGQgdGV4dC10ZXh0LXByaW1hcnkgbWItMVwiPlxuICAgICAgICAgIEFkZCBNb25pdG9yZWQgRm9sZGVyXG4gICAgICAgIDwvaDI+XG4gICAgICAgIDxwIGNsYXNzTmFtZT1cInRleHQteHMgdGV4dC10ZXh0LXNlY29uZGFyeSBtYi01XCI+XG4gICAgICAgICAgQ29udGV4dE9TIHdpbGwgY29udGludW91c2x5IHRyYWNrLCBpbmdlc3QsIGFuZCBjb25uZWN0IGZpbGVzIHNhdmVkIGhlcmUuXG4gICAgICAgIDwvcD5cblxuICAgICAgICB7ZXJyb3IgJiYgKFxuICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwibWItNCBwLTMgcm91bmRlZC1sZyBiZy1kYW5nZXIvMTAgYm9yZGVyIGJvcmRlci1kYW5nZXIvMzAgdGV4dC14cyB0ZXh0LWRhbmdlclwiPlxuICAgICAgICAgICAge2Vycm9yfVxuICAgICAgICAgIDwvZGl2PlxuICAgICAgICApfVxuXG4gICAgICAgIDxmb3JtIG9uU3VibWl0PXtoYW5kbGVTdWJtaXR9IGNsYXNzTmFtZT1cInNwYWNlLXktNFwiPlxuICAgICAgICAgIDxkaXY+XG4gICAgICAgICAgICA8bGFiZWwgY2xhc3NOYW1lPVwiYmxvY2sgdGV4dC14cyBmb250LW1lZGl1bSB0ZXh0LXRleHQtc2Vjb25kYXJ5IG1iLTFcIj5cbiAgICAgICAgICAgICAgRm9sZGVyIFBhdGhcbiAgICAgICAgICAgIDwvbGFiZWw+XG4gICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggZ2FwLTJcIj5cbiAgICAgICAgICAgICAgPGlucHV0XG4gICAgICAgICAgICAgICAgdHlwZT1cInRleHRcIlxuICAgICAgICAgICAgICAgIHZhbHVlPXtwYXRofVxuICAgICAgICAgICAgICAgIG9uQ2hhbmdlPXsoZSkgPT4gc2V0UGF0aChlLnRhcmdldC52YWx1ZSl9XG4gICAgICAgICAgICAgICAgcGxhY2Vob2xkZXI9XCJDOlxcVXNlcnNcXC4uLlxcRG9jdW1lbnRzXFxSZXNlYXJjaFwiXG4gICAgICAgICAgICAgICAgY2xhc3NOYW1lPVwiZmxleC0xIHB4LTMgcHktMiBiZy1iYWNrZ3JvdW5kIGJvcmRlciBib3JkZXItYm9yZGVyIHJvdW5kZWQtbGcgdGV4dC1zbSB0ZXh0LXRleHQtcHJpbWFyeSBmb2N1czpvdXRsaW5lLW5vbmUgZm9jdXM6Ym9yZGVyLXByaW1hcnkgcGxhY2Vob2xkZXI6dGV4dC10ZXh0LXRlcnRpYXJ5IGZvbnQtbW9ub1wiXG4gICAgICAgICAgICAgIC8+XG4gICAgICAgICAgICAgIDxidXR0b25cbiAgICAgICAgICAgICAgICB0eXBlPVwiYnV0dG9uXCJcbiAgICAgICAgICAgICAgICBvbkNsaWNrPXtoYW5kbGVCcm93c2V9XG4gICAgICAgICAgICAgICAgY2xhc3NOYW1lPVwicHgtMyBweS0yIGJnLXN1cmZhY2UtaG92ZXIgaG92ZXI6Ymctc3VyZmFjZS1hY3RpdmUgYm9yZGVyIGJvcmRlci1ib3JkZXIgcm91bmRlZC1sZyB0ZXh0LXNtIHRleHQtdGV4dC1zZWNvbmRhcnkgZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTEuNSB0cmFuc2l0aW9uLWNvbG9yc1wiXG4gICAgICAgICAgICAgID5cbiAgICAgICAgICAgICAgICA8Rm9sZGVyIGNsYXNzTmFtZT1cInctNCBoLTRcIiAvPlxuICAgICAgICAgICAgICAgIEJyb3dzZVxuICAgICAgICAgICAgICA8L2J1dHRvbj5cbiAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgIDwvZGl2PlxuXG4gICAgICAgICAgPGRpdj5cbiAgICAgICAgICAgIDxsYWJlbCBjbGFzc05hbWU9XCJibG9jayB0ZXh0LXhzIGZvbnQtbWVkaXVtIHRleHQtdGV4dC1zZWNvbmRhcnkgbWItMVwiPlxuICAgICAgICAgICAgICBEaXNwbGF5IE5hbWVcbiAgICAgICAgICAgIDwvbGFiZWw+XG4gICAgICAgICAgICA8aW5wdXRcbiAgICAgICAgICAgICAgdHlwZT1cInRleHRcIlxuICAgICAgICAgICAgICB2YWx1ZT17ZGlzcGxheU5hbWV9XG4gICAgICAgICAgICAgIG9uQ2hhbmdlPXsoZSkgPT4gc2V0RGlzcGxheU5hbWUoZS50YXJnZXQudmFsdWUpfVxuICAgICAgICAgICAgICBwbGFjZWhvbGRlcj1cImUuZy4gQUkgUmVzZWFyY2ggUGFwZXJzXCJcbiAgICAgICAgICAgICAgY2xhc3NOYW1lPVwidy1mdWxsIHB4LTMgcHktMiBiZy1iYWNrZ3JvdW5kIGJvcmRlciBib3JkZXItYm9yZGVyIHJvdW5kZWQtbGcgdGV4dC1zbSB0ZXh0LXRleHQtcHJpbWFyeSBmb2N1czpvdXRsaW5lLW5vbmUgZm9jdXM6Ym9yZGVyLXByaW1hcnkgcGxhY2Vob2xkZXI6dGV4dC10ZXh0LXRlcnRpYXJ5XCJcbiAgICAgICAgICAgIC8+XG4gICAgICAgICAgPC9kaXY+XG5cbiAgICAgICAgICA8ZGl2PlxuICAgICAgICAgICAgPGxhYmVsIGNsYXNzTmFtZT1cImJsb2NrIHRleHQteHMgZm9udC1tZWRpdW0gdGV4dC10ZXh0LXNlY29uZGFyeSBtYi0xXCI+XG4gICAgICAgICAgICAgIFNvdXJjZSBDYXRlZ29yeVxuICAgICAgICAgICAgPC9sYWJlbD5cbiAgICAgICAgICAgIDxzZWxlY3RcbiAgICAgICAgICAgICAgdmFsdWU9e3NvdXJjZVR5cGV9XG4gICAgICAgICAgICAgIG9uQ2hhbmdlPXsoZSkgPT4gc2V0U291cmNlVHlwZShlLnRhcmdldC52YWx1ZSBhcyBTb3VyY2VUeXBlKX1cbiAgICAgICAgICAgICAgY2xhc3NOYW1lPVwidy1mdWxsIHB4LTMgcHktMiBiZy1iYWNrZ3JvdW5kIGJvcmRlciBib3JkZXItYm9yZGVyIHJvdW5kZWQtbGcgdGV4dC1zbSB0ZXh0LXRleHQtcHJpbWFyeSBmb2N1czpvdXRsaW5lLW5vbmUgZm9jdXM6Ym9yZGVyLXByaW1hcnlcIlxuICAgICAgICAgICAgPlxuICAgICAgICAgICAgICA8b3B0aW9uIHZhbHVlPVwiZG9jdW1lbnRzXCI+RG9jdW1lbnRzPC9vcHRpb24+XG4gICAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9XCJzY3JlZW5zaG90c1wiPlNjcmVlbnNob3RzPC9vcHRpb24+XG4gICAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9XCJyZXNlYXJjaFwiPlJlc2VhcmNoPC9vcHRpb24+XG4gICAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9XCJwcm9qZWN0c1wiPlByb2plY3RzPC9vcHRpb24+XG4gICAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9XCJkb3dubG9hZHNcIj5Eb3dubG9hZHM8L29wdGlvbj5cbiAgICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT1cImN1c3RvbVwiPkN1c3RvbTwvb3B0aW9uPlxuICAgICAgICAgICAgPC9zZWxlY3Q+XG4gICAgICAgICAgPC9kaXY+XG5cbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXgganVzdGlmeS1lbmQgZ2FwLTMgcHQtM1wiPlxuICAgICAgICAgICAgPGJ1dHRvblxuICAgICAgICAgICAgICB0eXBlPVwiYnV0dG9uXCJcbiAgICAgICAgICAgICAgb25DbGljaz17b25DbG9zZX1cbiAgICAgICAgICAgICAgY2xhc3NOYW1lPVwicHgtNCBweS0yIHRleHQtc20gdGV4dC10ZXh0LXNlY29uZGFyeSBob3Zlcjp0ZXh0LXRleHQtcHJpbWFyeSB0cmFuc2l0aW9uLWNvbG9yc1wiXG4gICAgICAgICAgICA+XG4gICAgICAgICAgICAgIENhbmNlbFxuICAgICAgICAgICAgPC9idXR0b24+XG4gICAgICAgICAgICA8YnV0dG9uXG4gICAgICAgICAgICAgIHR5cGU9XCJzdWJtaXRcIlxuICAgICAgICAgICAgICBkaXNhYmxlZD17aXNTdWJtaXR0aW5nfVxuICAgICAgICAgICAgICBjbGFzc05hbWU9XCJweC00IHB5LTIgdGV4dC1zbSBmb250LW1lZGl1bSB0ZXh0LXdoaXRlIGJnLXByaW1hcnkgaG92ZXI6YmctcHJpbWFyeS1ob3ZlciBkaXNhYmxlZDpvcGFjaXR5LTUwIHJvdW5kZWQtbGcgdHJhbnNpdGlvbi1jb2xvcnNcIlxuICAgICAgICAgICAgPlxuICAgICAgICAgICAgICB7aXNTdWJtaXR0aW5nID8gXCJDb25uZWN0aW5nLi4uXCIgOiBcIkF1dGhvcmlzZSAmIE1vbml0b3JcIn1cbiAgICAgICAgICAgIDwvYnV0dG9uPlxuICAgICAgICAgIDwvZGl2PlxuICAgICAgICA8L2Zvcm0+XG4gICAgICA8L2Rpdj5cbiAgICA8L2Rpdj5cbiAgKTtcbn07XG5cbmV4cG9ydCBkZWZhdWx0IEFkZFNvdXJjZURpYWxvZztcbiJdLCJmaWxlIjoiQzovVXNlcnMvRXNoYWFuIE1pc2hyYS9PbmVEcml2ZS9EZXNrdG9wL1NlbS01L0lNRC9Qcm9qZWN0L2NvbnRleHRvcy9zcmMvY29tcG9uZW50cy9BZGRTb3VyY2VEaWFsb2cudHN4In0=

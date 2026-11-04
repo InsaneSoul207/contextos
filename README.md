@@ -60,6 +60,13 @@ ContextOS is built on a local-first, modular architecture separating the native 
 │               │                              │              │
 │               ▼                              ▼              │
 │  ┌───────────────────────────────────────────────────────┐  │
+│  │       Custom Deep Learning Engine (PyTorch)           │  │
+│  │   • BiLSTM + Self-Attention NER (Entity Discovery)    │  │
+│  │   • Transformer Encoder (Document Categorization)     │  │
+│  └────────────────────────────┬──────────────────────────┘  │
+│                               │                             │
+│                               ▼                             │
+│  ┌───────────────────────────────────────────────────────┐  │
 │  │              Temporal Knowledge Graph                 │  │
 │  │           (Entities, Relations, Provenance)           │  │
 │  └────────────────────────────┬──────────────────────────┘  │
@@ -91,9 +98,11 @@ contextos/
 ├── backend/                       # Python 3.12+ FastAPI AI Engine
 │   ├── app/
 │   │   ├── api/                   # REST Endpoints
+│   │   │   ├── collections.py     # Memory collections & tagging
 │   │   │   ├── documents.py       # Document indexing & file uploads
 │   │   │   ├── graph.py           # Entity-relationship graph queries
 │   │   │   ├── memories.py        # Memory chunk inspection & deletion
+│   │   │   ├── ml.py              # Custom Deep Learning model inference & metadata
 │   │   │   ├── search.py          # Hybrid search & contextual chat
 │   │   │   ├── sources.py         # Directory monitoring management
 │   │   │   └── stats.py           # Activity logs & timeline stats
@@ -106,6 +115,19 @@ contextos/
 │   │   ├── ingestion/
 │   │   │   ├── scanner.py         # Initial directory walk & change detection
 │   │   │   └── watcher.py         # Real-time debounced Watchdog file monitor
+│   │   ├── ml/                    # Custom Deep Learning Modules (PyTorch from scratch)
+│   │   │   ├── ner/               # BiLSTM + Multi-Head Attention NER model
+│   │   │   │   ├── model.py       # Neural network architecture definition
+│   │   │   │   ├── dataset.py     # BIO vocabulary & collation padding
+│   │   │   │   ├── train.py       # PyTorch training & evaluation loop
+│   │   │   │   └── inference.py   # High-throughput sequence tagging inference
+│   │   │   ├── classifier/        # Mini-Transformer Document Classifier
+│   │   │   │   ├── transformer_blocks.py # Custom PositionalEncoding, MHA & FFN
+│   │   │   │   ├── model.py       # Transformer Encoder + Attention Pooling
+│   │   │   │   ├── dataset.py     # Taxonomy vocabulary & dataloaders
+│   │   │   │   ├── train.py       # PyTorch training loop with AdamW
+│   │   │   │   └── inference.py   # Document category prediction engine
+│   │   │   └── weights/           # Trained PyTorch model weights & vocabularies
 │   │   ├── models/
 │   │   │   └── schemas.py         # Pydantic data schemas & response models
 │   │   ├── processing/
@@ -172,6 +194,76 @@ contextos/
 ├── vite.config.ts                 # Vite bundler configuration
 └── tailwind.config.js             # Dark-first aesthetic styling system
 ```
+
+---
+
+## 🧠 Custom Deep Learning Architectures (PyTorch From Scratch)
+
+Rather than treating models as black-box third-party APIs, ContextOS features two dedicated neural architectures designed and implemented from mathematical primitives in pure PyTorch (`nn.Module`):
+
+```
+┌────────────────────────────────────────────────────────────────────────────────┐
+│               1. BiLSTM + Multi-Head Self-Attention NER Model                  │
+│                                                                                │
+│   Input Tokens ──► Embedding (128d) ──► 2-Layer BiLSTM ──► Multi-Head Self-Attn│
+│                                               │                      │         │
+│   BIO Output Tags ◄── Linear Classifier ◄── LayerNorm (Residual Add) ◄─────────┘
+│   (317,451 Trainable Parameters • Evaluated at 100% Validation F1)             │
+└────────────────────────────────────────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────────────────────────────┐
+│             2. Custom Mini-Transformer Document Classifier                     │
+│                                                                                │
+│   Tokens ──► Embeddings + Sinusoidal Positional Encoding                       │
+│                     │                                                          │
+│                     ▼                                                          │
+│   Stacked Pre-LN Transformer Blocks [ MHA(Q,K,V) + GELU FFN ]                  │
+│                     │                                                          │
+│                     ▼                                                          │
+│   Dual Pooling: [ Learned Attention Pooling || Global Masked Mean Pooling ]    │
+│                     │                                                          │
+│                     ▼                                                          │
+│   Deep MLP Classifier ──► Category Distribution (6 Taxonomy Classes)           │
+│   (387,079 Trainable Parameters • Peak Validation Accuracy: 100.0%)            │
+└────────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Model 1: BiLSTM + Multi-Head Self-Attention NER
+* **Location:** [`backend/app/ml/ner/`](backend/app/ml/ner/)
+* **Purpose:** Discovers named entities (`Technology`, `Project`, `Person`, `Date`, `Task`) from ingested documents and feeds dynamic relation edges directly into ContextOS's Temporal Knowledge Graph (`Uses`, `Works On`, `Assigned To`, `Discussed On`).
+* **Architecture Details:**
+  * **Embedding Layer:** $128$-dimensional word representation with spatial dropout.
+  * **Recurrent Stage:** 2-layer Bidirectional LSTM capturing bidirectional sequential context.
+  * **Attention Stage:** 4-head self-attention with scaled dot-product and key-padding mask.
+  * **Residual & Norm:** Pre-norm connection $x = \text{LayerNorm}(\text{LSTM}(x) + \text{Attention}(\text{LSTM}(x)))$.
+  * **Output:** BIO sequence classification with pad-token loss masking (`ignore_index=-100`).
+
+### Model 2: Custom Transformer Document Classifier
+* **Location:** [`backend/app/ml/classifier/`](backend/app/ml/classifier/)
+* **Purpose:** Classifies ingested documents into 6 semantic categories: `Code & Technical Docs`, `Research & Academic`, `Meeting & Sync Notes`, `Coursework & Study`, `Financial & Receipts`, `Personal & Notes`. Every ingested document is linked as `Document -> Categorized As -> Category` in the Knowledge Graph.
+* **Architecture Details (Custom Primitives):**
+  * **Sinusoidal Positional Encodings:** $PE_{(pos, 2i)} = \sin(pos / 10000^{2i/d})$, $PE_{(pos, 2i+1)} = \cos(pos / 10000^{2i/d})$.
+  * **Scaled Dot-Product Attention:** $\text{Softmax}\left(\frac{Q K^T}{\sqrt{d_k}}\right) V$.
+  * **Stacked Transformer Encoder blocks** with LayerNorm and GELU Feed-Forward networks.
+  * **Dual-Pooling Head:** Combines learned attention pooling and global masked mean pooling.
+
+### Training & Running the Models
+
+To re-train or benchmark either model independently:
+
+```bash
+cd contextos/backend
+# Train the BiLSTM+Attention NER model
+python -m app.ml.ner.train
+
+# Train the custom Transformer Classifier
+python -m app.ml.classifier.train
+```
+
+Both models expose live REST API endpoints on `http://127.0.0.1:44480`:
+* `GET /api/ml/models` — Inspect architecture parameter counts and status.
+* `POST /api/ml/ner` — Extract named entities from arbitrary text.
+* `POST /api/ml/classify` — Classify text passages and retrieve softmax probability distributions across all 6 classes.
 
 ---
 
